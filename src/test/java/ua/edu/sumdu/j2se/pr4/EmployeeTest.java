@@ -3,36 +3,20 @@ package ua.edu.sumdu.j2se.pr4;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
-public class EmployeeTest {
+class EmployeeTest {
 
     @Test
-    void shouldThrowExceptionWhenInvalidSalary() {
-
-        Employee employee =
-                new Employee(
-                        "Anna",
-                        20,
-                        10000,
-                        "Manager"
-                );
-
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> employee.setSalary(-1)
-        );
+    void shouldThrowExceptionWhenInvalidConstructorData() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Employee("", 10, -100, "Intern");
+        });
     }
 
     @Test
-    void shouldThrowExceptionWhenInvalidConstructor() {
-
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new Employee(
-                        "",
-                        -5,
-                        -100,
-                        ""
-                )
-        );
+    void shouldThrowExceptionWhenInvalidSalaryInSetter() {
+        Employee emp = new Employee("Viktoria", 20, 1000, "Dev");
+        assertThrows(IllegalArgumentException.class, () -> {
+            emp.setSalary(-500);
+        });
     }
 }
