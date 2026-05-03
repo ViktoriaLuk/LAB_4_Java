@@ -1,115 +1,48 @@
 package ua.edu.sumdu.j2se.pr4;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
-/**
- * Головний клас програми.
- */
 public class Main {
+    private static ArrayList<Employee> employees = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        while (true) {
+            System.out.println("\n1. Create Employee\n2. Show All\n3. Exit");
+            String choice = scanner.nextLine();
 
-        Scanner scanner = new Scanner(System.in);
-
-        ArrayList<Employee> employees =
-                new ArrayList<Employee>();
-
-        boolean running = true;
-
-        while (running) {
-
-            System.out.println("\nМЕНЮ");
-            System.out.println("1. Створити працівника");
-            System.out.println("2. Вивести всіх працівників");
-            System.out.println("3. Вийти");
-
-            System.out.print("Ваш вибір: ");
-
-            try {
-
-                int choice = scanner.nextInt();
-                scanner.nextLine();
-
-                switch (choice) {
-
-                    case 1:
-
-                        System.out.print("Ім'я: ");
-                        String name = scanner.nextLine();
-
-                        System.out.print("Вік: ");
-                        int age = scanner.nextInt();
-
-                        System.out.print("Зарплата: ");
-                        double salary = scanner.nextDouble();
-
-                        scanner.nextLine();
-
-                        System.out.print("Посада: ");
-                        String position = scanner.nextLine();
-
-                        Employee employee =
-                                new Employee(
-                                        name,
-                                        age,
-                                        salary,
-                                        position
-                                );
-
-                        employees.add(employee);
-
-                        System.out.println(
-                                "Працівника додано");
-
-                        break;
-
-                    case 2:
-
-                        if (employees.isEmpty()) {
-
-                            System.out.println(
-                                    "Список порожній");
-
-                        } else {
-
-                            for (Employee emp : employees) {
-                                System.out.println(emp);
-                            }
-                        }
-
-                        break;
-
-                    case 3:
-
-                        running = false;
-
-                        System.out.println(
-                                "Програму завершено");
-
-                        break;
-
-                    default:
-
-                        System.out.println(
-                                "Невірний пункт меню");
-                }
-
-            } catch (InputMismatchException e) {
-
-                System.out.println(
-                        "Помилка: неправильний тип даних");
-
-                scanner.nextLine();
-
-            } catch (IllegalArgumentException e) {
-
-                System.out.println(
-                        "Помилка: " + e.getMessage());
+            if (choice.equals("1")) {
+                addEmployee();
+            } else if (choice.equals("2")) {
+                employees.forEach(System.out::println);
+            } else if (choice.equals("3")) {
+                break;
+            } else {
+                System.out.println("Unknown command");
             }
         }
+    }
 
-        scanner.close();
+    private static void addEmployee() {
+        try {
+            System.out.print("Enter name: ");
+            String name = scanner.nextLine();
+            
+            System.out.print("Enter age: ");
+            int age = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Enter salary: ");
+            double salary = Double.parseDouble(scanner.nextLine());
+
+            System.out.print("Enter position: ");
+            String position = scanner.nextLine();
+
+            employees.add(new Employee(name, age, salary, position));
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Please enter a valid number.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }
