@@ -1,8 +1,7 @@
 package ua.edu.sumdu.j2se.pr4;
 
-/**
- * Клас працівника.
- */
+import java.util.Objects;
+
 public class Employee {
 
     private String name;
@@ -10,18 +9,23 @@ public class Employee {
     private double salary;
     private String position;
 
-    /**
-     * Конструктор класу Employee.
-     */
-    public Employee(String name,
-                    int age,
-                    double salary,
-                    String position) {
-
-        setName(name);
-        setAge(age);
-        setSalary(salary);
-        setPosition(position);
+    public Employee(String name, int age, double salary, String position) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+        if (age < 18 || age > 100) {
+            throw new IllegalArgumentException("Age must be between 18 and 100");
+        }
+        if (salary < 0) {
+            throw new IllegalArgumentException("Salary cannot be negative");
+        }
+        if (position == null || position.trim().isEmpty()) {
+            throw new IllegalArgumentException("Position cannot be empty");
+        }
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+        this.position = position;
     }
 
     public String getName() {
@@ -29,13 +33,9 @@ public class Employee {
     }
 
     public void setName(String name) {
-
         if (name == null || name.trim().isEmpty()) {
-
-            throw new IllegalArgumentException(
-                    "Ім'я не може бути порожнім");
+            throw new IllegalArgumentException("Invalid name");
         }
-
         this.name = name;
     }
 
@@ -44,13 +44,9 @@ public class Employee {
     }
 
     public void setAge(int age) {
-
-        if (age <= 0) {
-
-            throw new IllegalArgumentException(
-                    "Вік має бути більше 0");
+        if (age < 18 || age > 100) {
+            throw new IllegalArgumentException("Too young or invalid age");
         }
-
         this.age = age;
     }
 
@@ -59,13 +55,9 @@ public class Employee {
     }
 
     public void setSalary(double salary) {
-
         if (salary < 0) {
-
-            throw new IllegalArgumentException(
-                    "Зарплата не може бути від'ємною");
+            throw new IllegalArgumentException("Invalid salary");
         }
-
         this.salary = salary;
     }
 
@@ -74,49 +66,30 @@ public class Employee {
     }
 
     public void setPosition(String position) {
-
-        if (position == null
-                || position.trim().isEmpty()) {
-
-            throw new IllegalArgumentException(
-                    "Посада не може бути порожньою");
+        if (position == null || position.trim().isEmpty()) {
+            throw new IllegalArgumentException("Invalid position");
         }
-
         this.position = position;
     }
 
     @Override
     public String toString() {
-
-        return "Employee{name='"
-                + name
-                + "', age="
-                + age
-                + ", salary="
-                + salary
-                + ", position='"
-                + position
-                + "'}";
+        return "Employee{name='" + name + "', age=" + age + ", salary=" + salary + ", position='" + position + "'}";
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return age == employee.age &&
+                Double.compare(employee.salary, salary) == 0 &&
+                Objects.equals(name, employee.name) &&
+                Objects.equals(position, employee.position);
+    }
 
-        if (this == obj) {
-            return true;
-        }
-
-        if (obj == null
-                || getClass() != obj.getClass()) {
-
-            return false;
-        }
-
-        Employee employee = (Employee) obj;
-
-        return age == employee.age
-                && salary == employee.salary
-                && name.equals(employee.name)
-                && position.equals(employee.position);
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age, salary, position);
     }
 }
