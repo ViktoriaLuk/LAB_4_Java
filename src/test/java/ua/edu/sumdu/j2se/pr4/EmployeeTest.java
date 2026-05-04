@@ -1,35 +1,45 @@
 package ua.edu.sumdu.j2se.pr4;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 public class EmployeeTest {
 
     @Test
-    public void testEmployeeCreation() {
-        // Тепер замість "Developer" пишемо Position.DEVELOPER
-        Employee employee = new Employee("Vika", 20, 25000.0, Position.DEVELOPER);
-        
-        assertEquals("Vika", employee.getName());
-        assertEquals(Position.DEVELOPER, employee.getPosition());
+    public void testFullTimeEmployeeCreation() {
+        FullTimeEmployee ft = new FullTimeEmployee("Vika", 20, "Staff", 15000.0);
+        assertEquals("Vika", ft.getName());
+        assertEquals(20, ft.getAge());
+        assertTrue(ft.toString().contains("Full-Time"));
     }
 
     @Test
-    public void testStaticCount() {
-        int initialCount = Employee.getCount();
-        new Employee("Test1", 25, 30000.0, Position.MANAGER);
-        new Employee("Test2", 30, 35000.0, Position.DESIGNER);
-        
-        // Перевіряємо, що лічильник збільшився на 2
-        assertEquals(initialCount + 2, Employee.getCount());
+    public void testContractEmployeeCreation() {
+        ContractEmployee ct = new ContractEmployee("Ira", 25, "Contractor", 500.0, 6);
+        assertEquals("Ira", ct.getName());
+        assertEquals(25, ct.getAge());
+        assertTrue(ct.toString().contains("Contract"));
     }
 
     @Test
-    public void testCopyConstructor() {
-        Employee original = new Employee("Original", 22, 20000.0, Position.TESTER);
-        Employee copy = new Employee(original); // Використовуємо конструктор копіювання
+    public void testPolymorphismInArray() {
+        Employee ft = new FullTimeEmployee("Oleg", 30, "Staff", 20000.0);
+        Employee ct = new ContractEmployee("Max", 22, "Contractor", 400.0, 12);
         
-        assertEquals(original.getName(), copy.getName());
-        assertEquals(original.getPosition(), copy.getPosition());
+        assertNotNull(ft);
+        assertNotNull(ct);
+        // Перевірка, що toString() викликає перевизначені методи підкласів
+        assertTrue(ft.toString().contains("Monthly Salary"));
+        assertTrue(ct.toString().contains("Hourly Rate"));
+    }
+
+    @Test
+    public void testInvalidAge() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new FullTimeEmployee("Ivan", 15, "Staff", 10000.0);
+        });
     }
 }

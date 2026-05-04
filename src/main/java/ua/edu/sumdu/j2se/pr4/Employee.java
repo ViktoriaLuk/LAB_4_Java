@@ -1,34 +1,38 @@
 package ua.edu.sumdu.j2se.pr4;
 
+import java.util.Objects;
+
 public class Employee {
     private String name;
     private int age;
-    private double salary;
-    private Position position; // Використовуємо enum
-    private static int count = 0; // Статичне поле
+    private String position;
 
-    public Employee(String name, int age, double salary, Position position) {
+    public Employee(String name, int age, String position) {
+        if (age < 18 || age > 100) throw new IllegalArgumentException("Age must be between 18 and 100");
         this.name = name;
         this.age = age;
-        this.salary = salary;
         this.position = position;
-        count++; // Збільшуємо лічильник при створенні
-    }
-
-    // Конструктор копіювання
-    public Employee(Employee other) {
-        this(other.name, other.age, other.salary, other.position);
-    }
-
-    public static int getCount() {
-        return count;
     }
 
     public String getName() { return name; }
-    public Position getPosition() { return position; }
+    public int getAge() { return age; }
+    public String getPosition() { return position; }
 
     @Override
-public String toString() {
-    return "Employee{name='" + name + "', age=" + age + ", salary=" + salary + ", position='" + position + "'}";
-  }
+    public String toString() {
+        return String.format("Employee{name='%s', age=%d, position='%s'}", name, age, position);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return age == employee.age && Objects.equals(name, employee.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age);
+    }
 }
