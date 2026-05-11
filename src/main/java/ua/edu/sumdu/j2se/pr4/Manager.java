@@ -8,6 +8,10 @@ public class Manager extends Employee {
         this.teamSize = teamSize;
     }
 
+    public int getTeamSize() {
+        return teamSize;
+    }
+
     @Override
     public String toString() {
         return super.toString() + " [Type: Manager, Team Size: " + teamSize + "]";

@@ -8,6 +8,10 @@ public class FullTimeEmployee extends Employee {
         this.monthlySalary = monthlySalary;
     }
 
+    public double getMonthlySalary() {
+        return monthlySalary;
+    }
+
     @Override
     public String toString() {
         return super.toString() + " [Type: Full-Time, Monthly Salary: " + monthlySalary + "]";

@@ -10,6 +10,14 @@ public class ContractEmployee extends Employee {
         this.contractPeriodMonths = months;
     }
 
+    public double getHourlyRate() {
+        return hourlyRate;
+    }
+
+    public int getContractPeriod() {
+        return contractPeriodMonths;
+    }
+
     @Override
     public String toString() {
         return super.toString() + " [Type: Contract, Hourly Rate: " + hourlyRate + ", Period: " + contractPeriodMonths + "m]";

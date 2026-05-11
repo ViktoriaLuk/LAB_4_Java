@@ -8,6 +8,10 @@ public class Intern extends Employee {
         this.university = university;
     }
 
+    public String getUniversity() {
+        return university;
+    }
+
     @Override
     public String toString() {
         return super.toString() + " [Type: Intern, University: " + university + "]";
