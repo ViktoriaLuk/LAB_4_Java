@@ -6,7 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,27 +27,83 @@ public class Main {
 
         while (true) {
             System.out.println("\n--- Main Menu ---");
-            System.out.println("1. Create new object");
-            System.out.println("2. Show all objects");
-            System.out.println("3. Exit");
+            System.out.println("1. Search object");
+            System.out.println("2. Create new object");
+            System.out.println("3. Show all objects");
+            System.out.println("4. Exit");
             System.out.print("> ");
             System.out.flush();
             
             String choice = scanner.nextLine();
             
-            if (choice.equals("3")) {
+            if (choice.equals("4")) {
                 saveToJson(employees, jsonFile);
                 System.out.println("Вихід...");
                 break;
             } else if (choice.equals("1")) {
-                createObjectMenu(employees, scanner);
+                searchMenu(employees, scanner);
             } else if (choice.equals("2")) {
+                createObjectMenu(employees, scanner);
+            } else if (choice.equals("3")) {
                 showAll(employees);
             }
         }
         
         scanner.close();
         System.out.println("Program finished.");
+    }
+
+    private static void searchMenu(ArrayList<Employee> employees, Scanner scanner) {
+        System.out.println("\n--- Search Menu ---");
+        System.out.println("1. By Name");
+        System.out.println("2. By Position");
+        System.out.println("3. By Age Range");
+        System.out.println("4. Back");
+        System.out.print("> ");
+
+        try {
+            int type = Integer.parseInt(scanner.nextLine());
+            List<Employee> results = new ArrayList<>();
+
+            if (type == 1) {
+                System.out.print("Enter name: ");
+                String name = scanner.nextLine();
+                results = employees.stream()
+                        .filter(e -> e.getName().equalsIgnoreCase(name))
+                        .collect(Collectors.toList());
+            } else if (type == 2) {
+                System.out.print("Enter position: ");
+                String pos = scanner.nextLine();
+                results = employees.stream()
+                        .filter(e -> e.getPosition().equalsIgnoreCase(pos))
+                        .collect(Collectors.toList());
+            } else if (type == 3) {
+                System.out.print("Enter min age: ");
+                int min = Integer.parseInt(scanner.nextLine());
+                System.out.print("Enter max age: ");
+                int max = Integer.parseInt(scanner.nextLine());
+                results = employees.stream()
+                        .filter(e -> e.getAge() >= min && e.getAge() <= max)
+                        .collect(Collectors.toList());
+            } else {
+                return;
+            }
+
+            printSearchResults(results);
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Invalid input.");
+        }
+    }
+
+    private static void printSearchResults(List<Employee> results) {
+        if (results.isEmpty()) {
+            System.out.println("No employees found.");
+        } else {
+            System.out.println("Found results:");
+            for (Employee e : results) {
+                System.out.println(e);
+            }
+        }
     }
 
     private static void createObjectMenu(ArrayList<Employee> employees, Scanner scanner) {

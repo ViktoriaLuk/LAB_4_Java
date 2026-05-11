@@ -1,13 +1,10 @@
 [
   {
-    "monthlySalary": 34000.0,
     "name": "Sonya",
     "age": 38,
     "position": "Designer"
   },
   {
-    "hourlyRate": 240.0,
-    "contractPeriodMonths": 10,
     "name": "Rose",
     "age": 21,
     "position": "Tester"
